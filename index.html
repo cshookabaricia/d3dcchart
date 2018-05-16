@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Gender Identity per Emergency Preparedness Survey Response</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <style>
+        .legend {
+            font-size: 18px;
+        }
+        .legend {
+            font-family: 'Montserrat', sans-serif;
+        }
+        rect {
+            stroke-width: 2;
+        }
+    </style>
+</head>
+<body>
+<div id="chart"></div>
+<script src="js/d3.v4.min.js"></script>
+<script>
+    (function(d3) {
+        'use strict';
+        var dataset = [
+            { label: 'Male', count: 145 },
+            { label: 'Female', count: 259 },
+            { label: 'Non-Binary', count: 4 }
+        ];
+
+        //attempt to create polylines and numerical lables
+        var datasetTwo = [
+            {label: '145'},
+            {label: '259'},
+            {label: '4'}
+        ];
+        var width = 360;
+        var height = 360;
+        var radius = Math.min(width, height) / 2;
+        var donutWidth = 80;
+        var legendRectSize = 20;
+        var legendSpacing = 5;
+        var color = d3.scaleOrdinal()
+            .range(['#a6cee3','#1f78b4', '#b2df8a']);
+        var svg = d3.select('#chart')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height)
+            .append('g')
+            .attr('transform', 'translate(' + (width / 2) +
+                ',' + (height / 2) + ')');
+        var arc = d3.arc()
+            .innerRadius(radius - donutWidth)
+            .outerRadius(radius);
+        var pie = d3.pie()
+            .value(function(d) { return d.count; })
+            .sort(null);
+        var path = svg.selectAll('path')
+            .data(pie(dataset))
+            .enter()
+            .append('path')
+            .attr('d', arc)
+            .attr('fill', function(d) {
+                return color(d.data.label);
+            });
+
+        //add legend, centered in middle of chart
+        var legend = svg.selectAll('.legend')
+            .data(color.domain())
+            .enter()
+            .append('g')
+            .attr('class', 'legend')
+            .attr('transform', function(d, i) {
+                var height = legendRectSize + legendSpacing;
+                var offset =  height * color.domain().length / 2;
+                var horz = -3 * legendRectSize;
+                var vert = i * height - offset;
+                return 'translate(' + horz + ',' + vert + ')';
+            });
+
+        legend.append('rect')
+            .attr('width', legendRectSize)
+            .attr('height', legendRectSize)
+            .style('fill', color)
+            .style('stroke', color);
+
+        legend.append('text')
+            .attr('x', legendRectSize + legendSpacing)
+            .attr('y', legendRectSize - legendSpacing)
+            .text(function(d) { return d; });
+    })(window.d3);
+</script>
+</body>
+</html>
