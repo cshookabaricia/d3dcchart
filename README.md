@@ -10,4 +10,4 @@ D3 Version 4 | (C) Mike Bostock: https://d3js.org
 
 ### Preview
 
-![Tentative Sketch](https://github.com/cshookabaricia/empreparepercepvis/blob/master/img/interfacesketch.png)
+![Pie Chart](https://github.com/cshookabaricia/emd3dcchart/blob/master/img/reportedgenderbreakdown.png)
